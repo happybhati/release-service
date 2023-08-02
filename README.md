@@ -2,7 +2,7 @@
 
 Release service is Kubernetes operator to control the life cycle of HACBS-managed releases in the context of AppStudio.
 
-## Running, building and testing the operator
+## Running, building and testing the release service operator
 
 This operator provides a [Makefile](Makefile) to run all the usual development tasks. This file can be used by cloning
 the repository and running `make` over any of the provided targets.
