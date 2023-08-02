@@ -1,6 +1,6 @@
 # HACBS Release service
 
-Release service is a Kubernetes operator to control the life cycle of HACBS-managed releases in the context of AppStudio.
+Release service is Kubernetes operator to control the life cycle of HACBS-managed releases in the context of AppStudio.
 
 ## Running, building and testing the operator
 
