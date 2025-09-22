@@ -90,13 +90,31 @@ jobs:
                   body = "This is a test email from GitHub Actions using SMTP with authentication."
                   msg.attach(MIMEText(body, 'plain'))
                   
-                  with smtplib.SMTP('smtp.gmail.com', 587) as server:
-                      print("📡 Connected to smtp.gmail.com:587")
-                      server.starttls()
-                      server.login(username, password)
-                      server.send_message(msg)
-                      print("✅ Email sent successfully with authentication!")
-                      return True
+                  # Try Google Workspace SMTP first, then regular Gmail
+                  servers_to_try = [
+                      ('smtp.googlemail.com', 587, 'Google Workspace'),
+                      ('smtp.gmail.com', 587, 'Gmail'),
+                      ('smtp.gmail.com', 465, 'Gmail SSL')
+                  ]
+                  
+                  for smtp_server, port, name in servers_to_try:
+                      try:
+                          print(f"📡 Trying {name}: {smtp_server}:{port}")
+                          with smtplib.SMTP(smtp_server, port) as server:
+                              if port == 465:
+                                  server.starttls()
+                              else:
+                                  server.starttls()
+                              server.login(username, password)
+                              server.send_message(msg)
+                              print(f"✅ Email sent successfully via {name}!")
+                              return True
+                      except Exception as e:
+                          print(f"❌ {name} failed: {e}")
+                          continue
+                  
+                  print("❌ All SMTP servers failed")
+                  return False
                       
               except Exception as e:
                   print(f"❌ Auth SMTP failed: {e}")
